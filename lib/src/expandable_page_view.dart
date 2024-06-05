@@ -293,7 +293,7 @@ class _ExpandablePageViewState extends State<ExpandablePageView> {
       return PageView.builder(
         controller: _pageController,
         itemBuilder: (context, index) => _itemBuilder(context, widget.allowInfiniteScroll ? index % widget.itemCount! : index),
-        itemCount: widget.allowImplicitScrolling ? null : widget.itemCount,
+        itemCount: widget.allowInfiniteScroll ? null : widget.itemCount,
         onPageChanged: widget.onPageChanged,
         reverse: widget.reverse,
         physics: widget.physics,
