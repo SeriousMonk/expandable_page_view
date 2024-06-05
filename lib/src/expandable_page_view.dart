@@ -67,6 +67,11 @@ class ExpandablePageView extends StatefulWidget {
   /// Corresponds to Material's PageView's allowImplicitScrolling parameter: https://api.flutter.dev/flutter/widgets/PageView-class.html
   final bool allowImplicitScrolling;
 
+  ///If true this will make it so that if the user swipes on the last page, the next
+  ///page will be the first page
+  ///This will only work when using ExpandablePageView.builder constructor
+  final bool allowInfiniteScroll;
+
   /// Restoration ID to save and restore the scroll offset of the scrollable.
   ///
   /// Corresponds to Material's PageView's restorationId parameter: https://api.flutter.dev/flutter/widgets/PageView-class.html
@@ -139,6 +144,7 @@ class ExpandablePageView extends StatefulWidget {
     this.pageSnapping = true,
     this.dragStartBehavior = DragStartBehavior.start,
     this.allowImplicitScrolling = false,
+    this.allowInfiniteScroll = false,
     this.restorationId,
     this.clipBehavior = Clip.hardEdge,
     this.animateFirstPage = false,
@@ -166,6 +172,7 @@ class ExpandablePageView extends StatefulWidget {
     this.pageSnapping = true,
     this.dragStartBehavior = DragStartBehavior.start,
     this.allowImplicitScrolling = false,
+    this.allowInfiniteScroll = false,
     this.restorationId,
     this.clipBehavior = Clip.hardEdge,
     this.animateFirstPage = false,
@@ -285,8 +292,8 @@ class _ExpandablePageViewState extends State<ExpandablePageView> {
     if (isBuilder) {
       return PageView.builder(
         controller: _pageController,
-        itemBuilder: _itemBuilder,
-        itemCount: widget.itemCount,
+        itemBuilder: (context, index) => _itemBuilder(context, widget.allowInfiniteScroll ? index % widget.itemCount! : index),
+        itemCount: widget.allowImplicitScrolling ? null : widget.itemCount,
         onPageChanged: widget.onPageChanged,
         reverse: widget.reverse,
         physics: widget.physics,
