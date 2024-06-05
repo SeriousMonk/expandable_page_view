@@ -333,7 +333,11 @@ class _ExpandablePageViewState extends State<ExpandablePageView> {
   }
 
   void _updatePage() {
-    final newPage = _pageController.page!.round();
+    int newPage = _pageController.page!.round();
+    if(widget.allowInfiniteScroll){
+      newPage = newPage % widget.itemCount!;
+    }
+
     if (_currentPage != newPage) {
       setState(() {
         _firstPageLoaded = true;
